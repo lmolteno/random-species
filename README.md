@@ -1,8 +1,8 @@
 # Random (animal) Species Generator
 
-[species.knox.236.nz](species.knox.236.nz)
+[species.knox.236.nz](https://species.knox.236.nz/)
 
-Someone I know wanted a random species generator but was frustrated by the amount of beetles for a true random generator. This one lets you filter by class (e.g. Mammalia). It then searches on wikidata to get other names.
+Someone I know wanted a random species generator but was frustrated by the amount of beetles for a true random generator. This one lets you filter by class or phylum (e.g. Mammalia or Chordata). It then searches on wikidata to get other names.
 
 It uses the dataset from the [catalogue of life](https://www.gbif.org/dataset/7ddf754f-d193-4cc9-b351-99906754a03b). I unzipped, picked out Taxon.tsv, imported into pandas and put into an sqlite db.
 
