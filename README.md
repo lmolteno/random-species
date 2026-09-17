@@ -15,9 +15,12 @@ engine = create_engine('sqlite:///species.db', echo=False)
 df.to_sql(name='taxons', con=engine)
 ```
 
+I've created indices on `dwc:kingdom`, `dwc:phylum`, and `dwc:class`.
+
 It uses the wikidata sdk. into `static`:
 ```bash
 wget https://raw.githubusercontent.com/maxlath/wikibase-sdk/v8.1.1/dist/wikibase-sdk.min.js
 wget https://raw.githubusercontent.com/maxlath/wikibase-sdk/v8.1.1/dist/wikidata-sdk.min.js
 ```
+
 

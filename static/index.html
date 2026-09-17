@@ -7,8 +7,11 @@
 		<div class="form">
 			<h1 id="hero">rand-o-species</h1>
 			<form>
-				<label for="classNameInput">Class:</label>
-				<input list="classes" id="classNameInput" type="text" value="Mammalia"></input>
+				<select name="nameType" id="nameTypeInput">
+					<option value="class">Class</option>
+					<option value="phylum">Phylum</option>
+				</select>
+				<input list="classes" id="nameInput" type="text" value="Mammalia"></input>
 				<datalist id="classes">
 					<option>Mammalia</option>
 					<option>Amphibia</option>
@@ -40,10 +43,26 @@
 		<script type="text/javascript">
 			function findSpecies(event) {
 				event.preventDefault();
-				const className = document.getElementById("classNameInput").value
-				fetch("/query?" + new URLSearchParams({class_name: className}).toString())
+				const nameInput = document.getElementById("nameInput").value
+				const taxonRank = document.getElementById("nameTypeInput").value;
+
+				fetch(`/query?${taxonRank}_` + new URLSearchParams({name: nameInput}).toString())
 					.then(r => r.json())
 					.then(displaySpecies)
+			}
+
+			function populateOptions(event) {
+				const taxonRank = document.getElementById("nameTypeInput").value;
+				fetch(`/list?rank=${taxonRank}`)
+					.then(r => r.json())
+					.then(r => {
+						document.getElementById("classes").replaceChildren(...r.map(v => {
+							const option = document.createElement("option");
+							const valueNode = document.createTextNode(v);
+							option.appendChild(valueNode);
+							return option;
+						}));
+					});
 			}
 
 			function displaySpecies(species) {
@@ -98,12 +117,18 @@
 
 					const url = wdk.getEntities([id], ['en']);
 					fetch(url).then(r => r.json()).then(item => {
-						console.log(item);
-						const wikipediaName = item.entities[id].sitelinks.enwiki.title;
+						const entry = item.entities[id];
+
+						const wikipediaName = entry.sitelinks.enwiki.title;
 						const wikipediaUrl = `https://en.wikipedia.org/wiki/${wikipediaName.replaceAll(' ', '_')}`;
-						console.log(wikipediaName);
 						wikiLink.href = wikipediaUrl;
 						wikiLink.textContent = wikipediaName + " on wikipedia";
+
+						const imageRef = "P18";
+						if (Object.keys(entry.claims).includes(imageRef)) {
+							const filename = entry.claims[imageRef][0].mainsnak.datavalue.value.replaceAll(' ', '_');
+							console.log(filename);
+						}
 					}).catch(() => {
 						wikiLink.textContent = 'not found';
 					}).finally(() => {
@@ -117,6 +142,8 @@
 
 			window.addEventListener("DOMContentLoaded", () => {
 				document.getElementById("random_button").addEventListener('click', findSpecies);
+				populateOptions();
+				document.getElementById("nameTypeInput").addEventListener('change', populateOptions);
 			});
 		</script>
 		<style>
