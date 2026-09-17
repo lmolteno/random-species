@@ -1,4 +1,6 @@
-# Random species generator
+# Random (animal) Species Generator
+
+[species.knox.236.nz](species.knox.236.nz)
 
 Someone I know wanted a random species generator but was frustrated by the amount of beetles for a true random generator. This one lets you filter by class (e.g. Mammalia). It then searches on wikidata to get other names.
 
@@ -22,5 +24,6 @@ It uses the wikidata sdk. into `static`:
 wget https://raw.githubusercontent.com/maxlath/wikibase-sdk/v8.1.1/dist/wikibase-sdk.min.js
 wget https://raw.githubusercontent.com/maxlath/wikibase-sdk/v8.1.1/dist/wikidata-sdk.min.js
 ```
+
 
 
